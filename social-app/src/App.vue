@@ -14,3 +14,8 @@
     },
   }
 </script>
+<style scoped>
+html,body{
+  background-color: #dad7cd;
+}
+</style>
