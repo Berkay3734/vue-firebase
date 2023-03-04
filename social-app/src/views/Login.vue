@@ -2,7 +2,7 @@
     <main class="form-signin m-auto w-100">
     <div class="row">
         <div class="col-12">
-            <button @click="handleLogin" class="btn btn-primary"><i class="bi bi-google"></i> ile Giriş</button>
+            <button v-show="!kullanici" @click="handleLogin" class="btn btn-primary"><i class="bi bi-google"></i> ile Giriş</button>
         </div>
     </div>
     </main>
