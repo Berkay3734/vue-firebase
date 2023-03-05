@@ -11,8 +11,8 @@
         <div class="mb-3 text-center">
             <button @click="handleClick" type="button" class="btn btn-dark">Gönder</button>
         </div>
-			<div class="row" v-for="g in gonderiler" :key="g.id">
-				<div class="col-sm-6 col-md-6 col-lg-4">
+			<div class="row" >
+				<div v-for="g in gonderiler" :key="g.id"  class="col-sm-6 col-md-6 col-lg-4">
 					<div class="card bg-white p-3 mb-4 shadow">
 						<div class="d-flex justify-content-between mb-4">
 							<div class="user-info">
@@ -45,7 +45,7 @@
 					</div>
 				</div>
             </div>
-		</div>
+        </div>
 	</section>
 </template>
 <script>
@@ -94,10 +94,5 @@ export default {
     },
 }
 </script>
-
-
-
-
 <style scoped>
-
 </style>
