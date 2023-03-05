@@ -1,27 +1,52 @@
 <template>
-        <div class="container">
+        <section class="main-content">
+		<div class="container">
+			<h1>Yorum Paylaş</h1>
+			<br>
+			<br>
             <div class="mb-3">
-                <label for="exampleFormControInput1" class="form-label">Düşüncelerini Yaz</label>
-                <input type="text" class="form-control" id="exampleFromControlInput1" v-model="gonderi" placeholder="I am Happy <:">
+                <label for="exampleFormControInput1" class="form-label">Yorum Yap</label>
+                <input type="text" class="form-control" id="exampleFromControlInput1" v-model="gonderi" placeholder="Yapıcı Eleştirilere Açığım">
             </div>
         <div class="mb-3 text-center">
             <button @click="handleClick" type="button" class="btn btn-dark">Gönder</button>
         </div>
-        <hr />
-        <div class="mb-3">
-            <ol class="list-group list-group-numbered">
-                <li v-for="g in gonderiler" :key="g.id" class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">{{ g.gonderi }}</div>
-                    {{ g.tarih }}
-                    </div>
-                    <span class="badge bg-primary rounded-pill">{{ g.yorum.length }}</span>
-                    <span @click="handleDelete(g.id)" class="badge bg-danger mx-2"><i class="bi bi-x"></i></span>
-                </li>
-            </ol>
-
-        </div>
-        </div>
+			<div class="row" v-for="g in gonderiler" :key="g.id">
+				<div class="col-sm-6 col-md-6 col-lg-4">
+					<div class="card bg-white p-3 mb-4 shadow">
+						<div class="d-flex justify-content-between mb-4">
+							<div class="user-info">
+								<div class="user-info__img">
+									<img src="img/user1.jpg" alt="User Img">
+								</div>
+								<div class="user-info__basic">
+									<h5 class="mb-0">{{ g.username }}</h5>
+									<p class="text-muted mb-0">{{ g.tel }}</p>
+								</div>
+							</div>
+							<div class="dropdown open">
+								<a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fa fa-ellipsis-v"></i>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="triggerId1">
+									<a class="dropdown-item text-danger" @click="handleDelete(g.id)"><i class="fa fa-trash mr-1"></i> Delete</a>
+								</div>
+							</div>
+						</div>
+						<h6 class="mb-0">{{ g.gonderi }}</h6>
+						<div class="d-flex justify-content-between mt-4">
+							<div>
+								<h5 class="mb-0">
+									<small class="ml-1">{{ g.tarih }}</small>
+								</h5>
+							</div>
+							<span class="text-success font-weight-bold">Online</span>
+						</div>
+					</div>
+				</div>
+            </div>
+		</div>
+	</section>
 </template>
 <script>
 
@@ -33,7 +58,7 @@ import moment from 'moment'
 
 export default {
     setup() {
-        const {kullanici} = getUser()
+        const {kullanici,kAdi} = getUser()
         const gonderi = ref('')
         const gonderiler = ref([])
         moment.locale('tr')
@@ -43,9 +68,11 @@ export default {
                     gKullaniciAd: kullanici.value.displayName,
                     gonderi: gonderi.value,
                     tarih:serverTimestamp(),
-                    yorum:[]
+                    username: kAdi.value.displayName,
+                    tel: "05** *** ** **",
                 })
                 gonderi.value = ''
+
             }
         }
         const handleDelete = async (id) =>{
@@ -53,7 +80,7 @@ export default {
         }
         onMounted(()=>{
             const q = query(collection(db,'gonderiler'),where("gKullaniciAd","==",kullanici.value.displayName))
-            
+
             onSnapshot(q,querySnapshot=>{
                 const dizi=[];
                 querySnapshot.forEach(doc=>{
@@ -61,6 +88,7 @@ export default {
                 })
                 gonderiler.value=dizi;
             })
+          
         })
         return {gonderi,handleClick,gonderiler,handleDelete}
     },
@@ -71,8 +99,5 @@ export default {
 
 
 <style scoped>
-    .container{
-        max-width: 600px;
-        padding-top: 50px;
-    }
+
 </style>
